@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SVG Blob Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 50px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    input[type="number"],
+    input[type="color"] {
+      padding: 10px;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .svg-container {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .svg-container svg {
+      max-width: 100%;
+      background-color: #fff;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>SVG Blob Generator</h1>
+    <label for="radius">Radius:</label>
+    <input type="number" id="radius" placeholder="Enter blob radius">
+
+    <label for="color">Color:</label>
+    <input type="color" id="color" value="#ff0000">
+
+    <label for="maxHeight">Max Height (px):</label>
+    <input type="number" id="maxHeight" placeholder="Enter max height">
+
+    <button class="btn" onclick="generateSVG()">Generate SVG</button>
+
+    <div class="svg-container">
+      <svg id="svgResult"></svg>
+      <button class="btn" onclick="downloadSVG()">Download SVG</button>
+    </div>
+  </div>
+
+  <script>
+    function generateSVG() {
+      const radius = document.getElementById("radius").value;
+      const color = document.getElementById("color").value;
+      const maxHeight = document.getElementById("maxHeight").value;
+
+      const svgResult = document.getElementById("svgResult");
+
+      svgResult.innerHTML = `
+        <circle cx="${radius}" cy="${radius}" r="${radius}" fill="${color}" />
+      `;
+
+      if (maxHeight) {
+        svgResult.setAttribute("style", `max-height: ${maxHeight}px`);
+      }
+    }
+
+    function downloadSVG() {
+      const svgData = document.getElementById("svgResult").outerHTML;
+      const blob = new Blob([svgData], { type: "image/svg+xml" });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "blob.svg";
+      link.click();
+    }
+  </script>
+</body>
+</html>
